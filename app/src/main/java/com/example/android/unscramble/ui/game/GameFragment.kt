@@ -23,7 +23,12 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.android.unscramble.R
+import com.example.android.unscramble.adapter.LetterAdapter
 import com.example.android.unscramble.databinding.GameFragmentBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -39,6 +44,9 @@ class GameFragment : Fragment() {
 
     // Binding object instance with access to the views in the game_fragment.xml layout
     private lateinit var binding: GameFragmentBinding
+
+    // RecyclerView with letters
+    private lateinit var recyclerView: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,6 +67,13 @@ class GameFragment : Fragment() {
         // This is used so that the binding can observe LiveData updates
         binding.lifecycleOwner = viewLifecycleOwner
 
+        // Setting up a RecyclerView
+        val adapter = LetterAdapter(requireContext(), viewModel)
+        recyclerView = binding.rvLetters
+        recyclerView.layoutManager = GridLayoutManager(requireContext(), 7)
+        recyclerView.adapter = adapter
+        adapter.updateScrambledWord(viewModel.currentScrambledWord.value.toString())
+
         // Setup a click listener for the Submit and Skip buttons.
         binding.submit.setOnClickListener { onSubmitWord() }
         binding.skip.setOnClickListener { onSkipWord() }
@@ -76,6 +91,10 @@ class GameFragment : Fragment() {
         viewModel.currentWordCount.observe(viewLifecycleOwner) { newWordCount ->
             binding.wordCount.text = getString(R.string.word_count, newWordCount, MAX_NO_OF_WORDS)
         }*/
+
+        viewModel.currentScrambledWord.observe(viewLifecycleOwner) { newWord ->
+            adapter.updateScrambledWord(newWord.toString())
+        }
     }
 
     /**
