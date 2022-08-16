@@ -21,3 +21,7 @@ There is some knowledge that wasn't used in this project, but i've also learned 
 * `Intent`s: explicit (launch another activity) and implicit (share a message) intents
 * `Menu`: how to create menu and its icons at the top of the application
 * `Android Jetpack Components`: `Fragment`s, `Navigation Component` (navigation graph and switching fragments)
+
+## How it looks?
+
+![Screenshot_20220816_112347](https://user-images.githubusercontent.com/46136468/184833729-2b5b613d-b424-4bc4-b92f-7966fbcc7a0e.png)
