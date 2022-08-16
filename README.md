@@ -14,7 +14,7 @@ Simple game where user unscrambles words and get points!
 * `Binding expressions`: how to get rid of `Observer`s in code and update the UI directly in the layout
 * `Talkback`: how to spell the word character by character using `Spannable` class
 
-## Noticable mention
+## Noticeable mention
 
 There is some knowledge that wasn't used in this project, but i've also learned it on the way:
 
