@@ -21,6 +21,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -94,13 +95,13 @@ class GameFragment : Fragment() {
 
         viewModel.currentSelectedLetters.observe(viewLifecycleOwner) {
             if (it.isNotEmpty()) {
-                selectedLettersAdapter.updateLetters(it.last())
+                selectedLettersAdapter.updateLetters(it)
             }
         }
 
         viewModel.currentFreeLetters.observe(viewLifecycleOwner) {
             if (it.isNotEmpty()) {
-                freeLettersAdapter.updateLetters(it.last())
+                freeLettersAdapter.updateLetters(it)
             }
         }
     }
@@ -110,17 +111,20 @@ class GameFragment : Fragment() {
     * Displays the next scrambled word.
     */
     private fun onSubmitWord() {
-//        TODO: change this method
-//        val playerWord = binding.textInputEditText.text.toString()
-//
-//        if (viewModel.isUserWordCorrect(playerWord)) {
-//            setErrorTextField(false)
-//            if (!viewModel.nextWord()) {
-//                showFinalScoreDialog()
-//            }
-//        } else {
-//            setErrorTextField(true)
-//        }
+        val playerWord = viewModel.currentSelectedLetters.value!!.joinToString()
+
+        if (playerWord.isEmpty()) {
+            Toast.makeText(requireContext(), "No selected letters!", Toast.LENGTH_SHORT).show()
+        } else {
+            // TODO: fix wrong when it is not wrong :D
+            if (viewModel.isUserWordCorrect(playerWord)) {
+                if (!viewModel.nextWord()) {
+                    showFinalScoreDialog()
+                }
+            } else {
+                Toast.makeText(requireContext(), "Wrong!", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     /**
