@@ -56,6 +56,7 @@ class GameFragment : Fragment() {
     ): View {
         // Inflate the layout XML file and return a binding object instance
         binding = DataBindingUtil.inflate(inflater, R.layout.game_fragment, container, false)
+        viewModel.setLocale(resources.configuration.locales.get(0).toString())
         return binding.root
     }
 
@@ -119,14 +120,14 @@ class GameFragment : Fragment() {
         val playerWord = viewModel.currentSelectedLetters.value!!.joinToString("")
 
         if (playerWord.isEmpty()) {
-            Toast.makeText(requireContext(), "No selected letters!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.no_selected_letters), Toast.LENGTH_SHORT).show()
         } else {
             if (viewModel.isUserWordCorrect(playerWord)) {
                 if (!viewModel.nextWord()) {
                     showFinalScoreDialog()
                 }
             } else {
-                Toast.makeText(requireContext(), "Wrong!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.wrong), Toast.LENGTH_SHORT).show()
             }
         }
     }
