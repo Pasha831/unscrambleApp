@@ -37,6 +37,14 @@ class GameViewModel : ViewModel() {
         }
     }
 
+    private val _currentFreeLetters = MutableLiveData(mutableListOf<Char>())
+    val currentFreeLetters: LiveData<MutableList<Char>>
+        get() = _currentFreeLetters
+
+    private val _currentSelectedLetters = MutableLiveData(mutableListOf<Char>())
+    val currentSelectedLetters: LiveData<MutableList<Char>>
+        get() = _currentSelectedLetters
+
     private var wordsList: MutableList<String> = mutableListOf()
     private lateinit var currentWord: String
 
@@ -84,8 +92,32 @@ class GameViewModel : ViewModel() {
         getNextWord()
     }
 
+    fun addNewSelectedLetter(newLetter: Char) {
+        _currentSelectedLetters.value?.add(newLetter)
+        _currentSelectedLetters.value = currentSelectedLetters.value
+        Log.d("lol", "i added $newLetter inside ViewModel to CSL, my size: ${_currentSelectedLetters.value?.size}")
+    }
+
+    fun addNewFreeLetter(newLetter: Char) {
+        _currentFreeLetters.value?.add(newLetter)
+        _currentFreeLetters.value = currentFreeLetters.value
+        Log.d("lol", "i added $newLetter inside ViewModel to NFL, my size: ${_currentFreeLetters.value?.size}")
+    }
+
+    fun addAllNewFreeLetters(allNewLetters: MutableList<Char>) {
+        deleteAllFreeLetters()
+        _currentFreeLetters.value?.addAll(allNewLetters)
+    }
+
+    fun deleteAllSelectedLetters() {
+        _currentSelectedLetters.value?.clear()
+    }
+
+    fun deleteAllFreeLetters() {
+        _currentFreeLetters.value?.clear()
+    }
+
     init {
-        Log.d("lol", "GameViewModel created!")
         getNextWord()
     }
 }
