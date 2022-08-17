@@ -1,9 +1,13 @@
 package com.example.android.unscramble.ui.game
 
+import android.content.Context
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.TtsSpan
 import android.util.Log
+import androidx.core.os.ConfigurationCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -37,11 +41,32 @@ class GameViewModel : ViewModel() {
         }
     }
 
+    private val _currentFreeLetters = MutableLiveData(mutableListOf<Char>())
+    val currentFreeLetters: LiveData<MutableList<Char>>
+        get() = _currentFreeLetters
+
+    private val _currentSelectedLetters = MutableLiveData(mutableListOf<Char>())
+    val currentSelectedLetters: LiveData<MutableList<Char>>
+        get() = _currentSelectedLetters
+
     private var wordsList: MutableList<String> = mutableListOf()
     private lateinit var currentWord: String
 
+    private var _locale = MutableLiveData("ru_RU")
+    val locale: LiveData<String>
+        get() = _locale
+
+    fun setLocale(locale: String) {
+        this._locale.value = locale
+    }
+
     private fun getNextWord() {
-        currentWord = allWordsList.random()
+        currentWord = if (locale.value == "ru_RU") {
+            allWordsListRu.random()
+        } else {
+            allWordsListEng.random()
+        }
+
         val tempWord  = currentWord.toCharArray()
         tempWord.shuffle()
 
@@ -52,6 +77,9 @@ class GameViewModel : ViewModel() {
         if (wordsList.contains(currentWord)) {
             getNextWord()
         } else {
+            deleteAllSelectedLetters()
+            deleteAllFreeLetters()
+
             _currentScrambledWord.value = String(tempWord)
             _currentWordCount.value = (_currentWordCount.value)?.inc()
             wordsList.add(currentWord)
@@ -84,8 +112,42 @@ class GameViewModel : ViewModel() {
         getNextWord()
     }
 
+    fun addNewSelectedLetter(newLetter: Char) {
+        _currentSelectedLetters.value?.add(newLetter)
+        _currentSelectedLetters.value = currentSelectedLetters.value
+    }
+
+    fun addNewFreeLetter(newLetter: Char) {
+        _currentFreeLetters.value?.add(newLetter)
+        _currentFreeLetters.value = currentFreeLetters.value
+    }
+
+    fun addAllNewFreeLetters(allNewLetters: MutableList<Char>) {
+        deleteAllFreeLetters()
+        _currentFreeLetters.value?.addAll(allNewLetters)
+    }
+
+    fun deleteAllSelectedLetters() {
+        _currentSelectedLetters.value?.clear()
+        _currentSelectedLetters.value = currentSelectedLetters.value
+    }
+
+    fun deleteAllFreeLetters() {
+        _currentFreeLetters.value?.clear()
+        _currentFreeLetters.value = currentFreeLetters.value
+    }
+
+    fun deleteFreeLetter(position: Int) {
+        _currentFreeLetters.value?.removeAt(position)
+        _currentFreeLetters.value = currentFreeLetters.value
+    }
+
+    fun deleteSelectedLetter(position: Int) {
+        _currentSelectedLetters.value?.removeAt(position)
+        _currentSelectedLetters.value = _currentSelectedLetters.value
+    }
+
     init {
-        Log.d("lol", "GameViewModel created!")
         getNextWord()
     }
 }

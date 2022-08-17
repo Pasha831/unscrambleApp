@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Расшифруй</string>
+    <string name="congratulations">Поздравляем!</string>
+    <string name="enter_your_word">Введите ваше слово</string>
+    <string name="exit">Выйти</string>
+    <string name="instructions">Расшифруйте слово, используя данные буквы</string>
+    <string name="play_again">Играть снова</string>
+    <string name="score">Очки: %d</string>
+    <string name="skip">Пропустить</string>
+    <string name="submit">Подтвердить</string>
+    <string name="try_again">Попробуйте снова!</string>
+    <string name="word_count">%d из %d слов</string>
+    <string name="you_scored">Вы набрали: %d очков</string>
+    <string name="no_selected_letters">Буквы не выбраны!</string>
+    <string name="wrong">Неверно!</string>
+</resources>
