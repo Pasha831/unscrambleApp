@@ -59,7 +59,7 @@
                 android:text="@string/submit"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/skip"
-                app:layout_constraintTop_toBottomOf="@+id/textField" />
+                app:layout_constraintTop_toBottomOf="@+id/rv_selected_letters" />
 
             <TextView
                 android:id="@+id/textView_instructions"
@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/instructions"
                 android:textSize="17sp"
-                app:layout_constraintBottom_toTopOf="@+id/textField"
+                app:layout_constraintBottom_toTopOf="@id/rv_selected_letters"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView_unscrambled_word" />
@@ -108,43 +108,25 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Score: 20" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textField"
-                style="@style/Widget.Unscramble.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_selected_letters"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/default_margin"
-                android:hint="@string/enter_your_word"
-                app:errorIconDrawable="@drawable/ic_error"
-                app:helperTextTextAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:layout_marginTop="32dp"
                 app:layout_constraintBottom_toTopOf="@+id/submit"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView_instructions">
+                app:layout_constraintTop_toBottomOf="@+id/textView_instructions" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/text_input_edit_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:inputType="textPersonName|textNoSuggestions"
-                    android:maxLines="1" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_free_letters"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintStart_toStartOf="@id/textField"
-                app:layout_constraintTop_toBottomOf="@id/skip">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_letters"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="16dp" />
-
-            </LinearLayout>
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/skip" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
