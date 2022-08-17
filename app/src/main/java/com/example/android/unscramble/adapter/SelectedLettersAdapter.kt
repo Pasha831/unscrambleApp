@@ -1,7 +1,6 @@
 package com.example.android.unscramble.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,12 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.android.unscramble.R
 import com.example.android.unscramble.ui.game.GameViewModel
 
-class LetterAdapter(
+class SelectedLettersAdapter(
     private val context: Context,
     private val viewModel: GameViewModel
-) : RecyclerView.Adapter<LetterAdapter.LetterViewHolder>() {
+) : RecyclerView.Adapter<SelectedLettersAdapter.LetterViewHolder>() {
 
-    private var letters: String = viewModel.currentScrambledWord.value.toString()
+    private lateinit var letters: MutableList<Char>
 
     class LetterViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         val button: Button = view.findViewById(R.id.button)
@@ -29,16 +28,25 @@ class LetterAdapter(
     }
 
     override fun onBindViewHolder(holder: LetterViewHolder, position: Int) {
-        Log.d("lol", "${viewModel.currentScrambledWord.value!!.length}")
         holder.button.text = letters[position].toString()
+        holder.button.setOnClickListener {
+            viewModel.addNewFreeLetter(holder.button.text[0])
+            letters.removeAt(position)
+            notifyDataSetChanged()
+        }
     }
 
     override fun getItemCount(): Int {
-        return viewModel.currentScrambledWord.value!!.length
+        return letters.size
     }
 
-    fun updateScrambledWord(newLetters: String) {
-        letters = newLetters
+    fun updateScrambledWord() {
+        letters = mutableListOf()
+        notifyDataSetChanged()
+    }
+
+    fun updateLetters(newLetter: Char) {
+        letters.add(newLetter)
         notifyDataSetChanged()
     }
 }
