@@ -1,6 +1,7 @@
 package com.example.android.unscramble.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,7 +32,7 @@ class FreeLettersAdapter(
         holder.button.text = letters[position].toString()
         holder.button.setOnClickListener {
             viewModel.addNewSelectedLetter(holder.button.text[0])
-            letters.removeAt(position)
+            viewModel.deleteFreeLetter(position)
             notifyDataSetChanged()
         }
     }
@@ -46,8 +47,8 @@ class FreeLettersAdapter(
         notifyDataSetChanged()
     }
 
-    fun updateLetters(newLetter: Char) {
-        letters.add(newLetter)
+    fun updateLetters(newLetters: MutableList<Char>) {
+        letters = newLetters
         notifyDataSetChanged()
     }
 }
