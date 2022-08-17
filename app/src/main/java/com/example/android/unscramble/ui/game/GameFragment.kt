@@ -26,6 +26,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.unscramble.R
 import com.example.android.unscramble.adapter.FreeLettersAdapter
@@ -73,7 +74,9 @@ class GameFragment : Fragment() {
             updateScrambledWord(viewModel.currentScrambledWord.value.toString().toMutableList())
         }
         recyclerView = binding.rvFreeLetters
-        recyclerView.layoutManager = GridLayoutManager(requireContext(), 7)
+        recyclerView.layoutManager = LinearLayoutManager(
+            requireContext(), LinearLayoutManager.HORIZONTAL, false
+        )
         recyclerView.adapter = freeLettersAdapter
 
         // Setting up a RecyclerView for selected letters adapter
@@ -81,7 +84,9 @@ class GameFragment : Fragment() {
             updateScrambledWord()
         }
         recyclerView = binding.rvSelectedLetters
-        recyclerView.layoutManager = GridLayoutManager(requireContext(), 7)
+        recyclerView.layoutManager = LinearLayoutManager(
+            requireContext(), LinearLayoutManager.HORIZONTAL, false
+        )
         recyclerView.adapter = selectedLettersAdapter
 
         // Setup a click listener for the Submit and Skip buttons.
