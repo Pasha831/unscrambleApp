@@ -46,9 +46,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/default_padding"
                 android:layout_marginEnd="@dimen/default_padding"
+                android:layout_marginTop="32dp"
                 android:text="@string/skip"
-                app:layout_constraintBaseline_toBaselineOf="@+id/submit"
-                app:layout_constraintEnd_toStartOf="@+id/submit"
+                app:layout_constraintTop_toBottomOf="@id/rv_selected_letters"
+                app:layout_constraintEnd_toStartOf="@id/submit"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <Button
@@ -57,8 +58,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/default_margin"
                 android:text="@string/submit"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintStart_toEndOf="@id/skip"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/skip"
                 app:layout_constraintTop_toBottomOf="@+id/rv_selected_letters" />
 
             <TextView
@@ -124,8 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@id/skip"
                 app:layout_constraintTop_toBottomOf="@id/skip" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
