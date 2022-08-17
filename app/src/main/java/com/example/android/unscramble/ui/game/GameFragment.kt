@@ -142,9 +142,7 @@ class GameFragment : Fragment() {
      * Increases the word count.
      */
     private fun onSkipWord() {
-        if (viewModel.nextWord()) {
-            setErrorTextField(false)
-        } else {
+        if (!viewModel.nextWord()) {
             showFinalScoreDialog()
         }
     }
@@ -155,7 +153,6 @@ class GameFragment : Fragment() {
      */
     private fun restartGame() {
         viewModel.reinitializeData()
-        setErrorTextField(false)
     }
 
     /**
@@ -163,20 +160,6 @@ class GameFragment : Fragment() {
      */
     private fun exitGame() {
         activity?.finish()
-    }
-
-    /**
-    * Sets and resets the text field error status.
-    */
-    private fun setErrorTextField(error: Boolean) {
-//        TODO: change this method
-//        if (error) {
-//            binding.textField.isErrorEnabled = true
-//            binding.textField.error = getString(R.string.try_again)
-//        } else {
-//            binding.textField.isErrorEnabled = false
-//            binding.textInputEditText.text = null
-//        }
     }
 
     private fun showFinalScoreDialog() {
