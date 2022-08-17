@@ -1,9 +1,13 @@
 package com.example.android.unscramble.ui.game
 
+import android.content.Context
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.TtsSpan
 import android.util.Log
+import androidx.core.os.ConfigurationCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -48,8 +52,21 @@ class GameViewModel : ViewModel() {
     private var wordsList: MutableList<String> = mutableListOf()
     private lateinit var currentWord: String
 
+    private var _locale = MutableLiveData("ru_RU")
+    val locale: LiveData<String>
+        get() = _locale
+
+    fun setLocale(locale: String) {
+        this._locale.value = locale
+    }
+
     private fun getNextWord() {
-        currentWord = allWordsList.random()
+        currentWord = if (locale.value == "ru_RU") {
+            allWordsListRu.random()
+        } else {
+            allWordsListEng.random()
+        }
+
         val tempWord  = currentWord.toCharArray()
         tempWord.shuffle()
 
