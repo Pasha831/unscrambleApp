@@ -27,4 +27,6 @@
     <string name="exit">Exit</string>
     <string name="play_again">Play Again</string>
     <string name="try_again">Try again!</string>
+    <string name="no_selected_letters">No selected letters!</string>
+    <string name="wrong">Wrong!</string>
 </resources>
