@@ -87,20 +87,6 @@ class GameFragment : Fragment() {
         binding.submit.setOnClickListener { onSubmitWord() }
         binding.skip.setOnClickListener { onSkipWord() }
 
-        // No need to use observers: we are using data binding instead!
-        // Binding expressions update the UI when the corresponding LiveData changes.
-        /*viewModel.currentScrambledWord.observe(viewLifecycleOwner) { newWord ->
-            binding.textViewUnscrambledWord.text = newWord
-        }
-
-        viewModel.score.observe(viewLifecycleOwner) { newScore ->
-            binding.score.text = getString(R.string.score, newScore)
-        }
-
-        viewModel.currentWordCount.observe(viewLifecycleOwner) { newWordCount ->
-            binding.wordCount.text = getString(R.string.word_count, newWordCount, MAX_NO_OF_WORDS)
-        }*/
-
         viewModel.currentScrambledWord.observe(viewLifecycleOwner) { newWord ->
             freeLettersAdapter.updateScrambledWord(newWord.toString().toMutableList())
             selectedLettersAdapter.updateScrambledWord()
