@@ -60,6 +60,9 @@ class GameViewModel : ViewModel() {
         if (wordsList.contains(currentWord)) {
             getNextWord()
         } else {
+            deleteAllSelectedLetters()
+            deleteAllFreeLetters()
+
             _currentScrambledWord.value = String(tempWord)
             _currentWordCount.value = (_currentWordCount.value)?.inc()
             wordsList.add(currentWord)
@@ -95,13 +98,11 @@ class GameViewModel : ViewModel() {
     fun addNewSelectedLetter(newLetter: Char) {
         _currentSelectedLetters.value?.add(newLetter)
         _currentSelectedLetters.value = currentSelectedLetters.value
-        Log.d("lol", "i added $newLetter inside ViewModel to CSL, my size: ${_currentSelectedLetters.value?.size}")
     }
 
     fun addNewFreeLetter(newLetter: Char) {
         _currentFreeLetters.value?.add(newLetter)
         _currentFreeLetters.value = currentFreeLetters.value
-        Log.d("lol", "i added $newLetter inside ViewModel to NFL, my size: ${_currentFreeLetters.value?.size}")
     }
 
     fun addAllNewFreeLetters(allNewLetters: MutableList<Char>) {
@@ -111,10 +112,22 @@ class GameViewModel : ViewModel() {
 
     fun deleteAllSelectedLetters() {
         _currentSelectedLetters.value?.clear()
+        _currentSelectedLetters.value = currentSelectedLetters.value
     }
 
     fun deleteAllFreeLetters() {
         _currentFreeLetters.value?.clear()
+        _currentFreeLetters.value = currentFreeLetters.value
+    }
+
+    fun deleteFreeLetter(position: Int) {
+        _currentFreeLetters.value?.removeAt(position)
+        _currentFreeLetters.value = currentFreeLetters.value
+    }
+
+    fun deleteSelectedLetter(position: Int) {
+        _currentSelectedLetters.value?.removeAt(position)
+        _currentSelectedLetters.value = _currentSelectedLetters.value
     }
 
     init {
