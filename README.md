@@ -4,6 +4,13 @@
 
 Simple game where user unscrambles words and get points!
 
+## Updates
+
+### v1.1.0:
+
+* Добавлена руссфикация! 🇷🇺
+* EditText was deleted, now application uses letter cards inside two Recycleriews
+
 ## What i've learned?
 
 * How to use and implement `Fragment`s
