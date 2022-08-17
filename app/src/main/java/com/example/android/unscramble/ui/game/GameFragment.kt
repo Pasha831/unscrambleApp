@@ -17,18 +17,18 @@
 package com.example.android.unscramble.ui.game
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.unscramble.R
-import com.example.android.unscramble.adapter.LetterAdapter
+import com.example.android.unscramble.adapter.FreeLettersAdapter
+import com.example.android.unscramble.adapter.SelectedLettersAdapter
 import com.example.android.unscramble.databinding.GameFragmentBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -67,12 +67,21 @@ class GameFragment : Fragment() {
         // This is used so that the binding can observe LiveData updates
         binding.lifecycleOwner = viewLifecycleOwner
 
-        // Setting up a RecyclerView
-        val adapter = LetterAdapter(requireContext(), viewModel)
-        recyclerView = binding.rvLetters
+        // Setting up a RecyclerView for free letters adapter
+        val freeLettersAdapter = FreeLettersAdapter(requireContext(), viewModel).apply {
+            updateScrambledWord(viewModel.currentScrambledWord.value.toString().toMutableList())
+        }
+        recyclerView = binding.rvFreeLetters
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 7)
-        recyclerView.adapter = adapter
-        adapter.updateScrambledWord(viewModel.currentScrambledWord.value.toString())
+        recyclerView.adapter = freeLettersAdapter
+
+        // Setting up a RecyclerView for selected letters adapter
+        val selectedLettersAdapter = SelectedLettersAdapter(requireContext(), viewModel).apply {
+            updateScrambledWord()
+        }
+        recyclerView = binding.rvSelectedLetters
+        recyclerView.layoutManager = GridLayoutManager(requireContext(), 7)
+        recyclerView.adapter = selectedLettersAdapter
 
         // Setup a click listener for the Submit and Skip buttons.
         binding.submit.setOnClickListener { onSubmitWord() }
@@ -93,7 +102,20 @@ class GameFragment : Fragment() {
         }*/
 
         viewModel.currentScrambledWord.observe(viewLifecycleOwner) { newWord ->
-            adapter.updateScrambledWord(newWord.toString())
+            freeLettersAdapter.updateScrambledWord(newWord.toString().toMutableList())
+            selectedLettersAdapter.updateScrambledWord()
+        }
+
+        viewModel.currentSelectedLetters.observe(viewLifecycleOwner) {
+            if (it.isNotEmpty()) {
+                selectedLettersAdapter.updateLetters(it.last())
+            }
+        }
+
+        viewModel.currentFreeLetters.observe(viewLifecycleOwner) {
+            if (it.isNotEmpty()) {
+                freeLettersAdapter.updateLetters(it.last())
+            }
         }
     }
 
@@ -102,16 +124,17 @@ class GameFragment : Fragment() {
     * Displays the next scrambled word.
     */
     private fun onSubmitWord() {
-        val playerWord = binding.textInputEditText.text.toString()
-
-        if (viewModel.isUserWordCorrect(playerWord)) {
-            setErrorTextField(false)
-            if (!viewModel.nextWord()) {
-                showFinalScoreDialog()
-            }
-        } else {
-            setErrorTextField(true)
-        }
+//        TODO: change this method
+//        val playerWord = binding.textInputEditText.text.toString()
+//
+//        if (viewModel.isUserWordCorrect(playerWord)) {
+//            setErrorTextField(false)
+//            if (!viewModel.nextWord()) {
+//                showFinalScoreDialog()
+//            }
+//        } else {
+//            setErrorTextField(true)
+//        }
     }
 
     /**
@@ -146,13 +169,14 @@ class GameFragment : Fragment() {
     * Sets and resets the text field error status.
     */
     private fun setErrorTextField(error: Boolean) {
-        if (error) {
-            binding.textField.isErrorEnabled = true
-            binding.textField.error = getString(R.string.try_again)
-        } else {
-            binding.textField.isErrorEnabled = false
-            binding.textInputEditText.text = null
-        }
+//        TODO: change this method
+//        if (error) {
+//            binding.textField.isErrorEnabled = true
+//            binding.textField.error = getString(R.string.try_again)
+//        } else {
+//            binding.textField.isErrorEnabled = false
+//            binding.textInputEditText.text = null
+//        }
     }
 
     private fun showFinalScoreDialog() {
