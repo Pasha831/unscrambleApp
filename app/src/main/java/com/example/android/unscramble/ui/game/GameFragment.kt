@@ -111,12 +111,11 @@ class GameFragment : Fragment() {
     * Displays the next scrambled word.
     */
     private fun onSubmitWord() {
-        val playerWord = viewModel.currentSelectedLetters.value!!.joinToString()
+        val playerWord = viewModel.currentSelectedLetters.value!!.joinToString("")
 
         if (playerWord.isEmpty()) {
             Toast.makeText(requireContext(), "No selected letters!", Toast.LENGTH_SHORT).show()
         } else {
-            // TODO: fix wrong when it is not wrong :D
             if (viewModel.isUserWordCorrect(playerWord)) {
                 if (!viewModel.nextWord()) {
                     showFinalScoreDialog()
