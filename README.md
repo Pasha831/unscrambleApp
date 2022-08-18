@@ -24,6 +24,8 @@ Simple game where user unscrambles words and get points!
 * `DataBinding`: how to bind code to UI and vise versa!
 * `Binding expressions`: how to get rid of `Observer`s in code and update the UI directly in the layout
 * `Talkback`: how to spell the word character by character using `Spannable` class
+* `Animation`s: how to make simple shaking and color changing animations
+* `Translation`: how to translate your app for different locales
 
 ## Noticeable mention
 
