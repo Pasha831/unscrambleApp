@@ -27,6 +27,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -140,21 +141,21 @@ class GameFragment : Fragment() {
                     showFinalScoreDialog()
                 }
             } else {
-                // TODO:
-                //  1) test the animation on my phone
+                // Shaking animation
+                val shake = AnimationUtils.loadAnimation(requireContext(), R.anim.shake)
+                binding.submit.startAnimation(shake)
 
+                // Changing color animation
                 val colorAnimation = ValueAnimator.ofObject(
                     ArgbEvaluator(),
                     ContextCompat.getColor(requireContext(), R.color.red_700),
-                    MaterialColors.getColor(requireContext(), R.attr.colorOnPrimary, Color.BLACK)
+                    ContextCompat.getColor(requireContext(), R.color.indigo_500)
                 )
-                colorAnimation.duration = 250L
+                colorAnimation.duration = 1000L
                 colorAnimation.addUpdateListener { animator ->
                     binding.submit.setBackgroundColor(animator.animatedValue as Int)
                 }
                 colorAnimation.start()
-
-                Toast.makeText(requireContext(), getString(R.string.wrong), Toast.LENGTH_SHORT).show()
             }
         }
     }
