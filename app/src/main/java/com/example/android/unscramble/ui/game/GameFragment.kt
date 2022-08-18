@@ -16,16 +16,20 @@
 
 package com.example.android.unscramble.ui.game
 
+import android.animation.ArgbEvaluator
+import android.animation.ValueAnimator
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.annotation.ColorRes
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.unscramble.R
@@ -33,6 +37,7 @@ import com.example.android.unscramble.adapter.FreeLettersAdapter
 import com.example.android.unscramble.adapter.SelectedLettersAdapter
 import com.example.android.unscramble.databinding.GameFragmentBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+
 
 /**
  * Fragment where the game is played, contains the game logic.
@@ -90,9 +95,25 @@ class GameFragment : Fragment() {
         )
         recyclerView.adapter = selectedLettersAdapter
 
-        // Setup a click listener for the Submit and Skip buttons.
+        // Setup a click listener for the Submit, Skip and Refresh buttons.
         binding.submit.setOnClickListener { onSubmitWord() }
         binding.skip.setOnClickListener { onSkipWord() }
+        binding.refresh.setOnClickListener {
+            createColorAnimation(
+                R.color.light_blue_200,
+                R.color.white,
+                it
+            ).start()
+
+            selectedLettersAdapter.clearSelectedLetters()
+            freeLettersAdapter.returnFreeLetters(
+                viewModel.currentScrambledWord.value.toString().toCharArray().toMutableList()
+            )
+            Log.d(
+                "lol",
+                "size of free: ${viewModel.currentFreeLetters.value?.size}, size of current: ${viewModel.currentSelectedLetters.value?.size}"
+            )
+        }
 
         viewModel.currentScrambledWord.observe(viewLifecycleOwner) { newWord ->
             freeLettersAdapter.updateScrambledWord(newWord.toString().toMutableList())
@@ -113,21 +134,49 @@ class GameFragment : Fragment() {
     }
 
     /**
-    * Checks the user's word, and updates the score accordingly.
-    * Displays the next scrambled word.
-    */
+     * Checks the user's word, and updates the score accordingly.
+     * Displays the next scrambled word.
+     */
     private fun onSubmitWord() {
         val playerWord = viewModel.currentSelectedLetters.value!!.joinToString("")
 
         if (playerWord.isEmpty()) {
-            Toast.makeText(requireContext(), getString(R.string.no_selected_letters), Toast.LENGTH_SHORT).show()
+            // Color animation
+            createColorAnimation(
+                R.color.red_700,
+                R.color.indigo_500,
+                binding.submit
+            ).start()
+
+            // And Toast message
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.no_selected_letters),
+                Toast.LENGTH_SHORT
+            ).show()
         } else {
             if (viewModel.isUserWordCorrect(playerWord)) {
                 if (!viewModel.nextWord()) {
                     showFinalScoreDialog()
+                } else {
+                    // Changing color animation
+                    createColorAnimation(
+                        R.color.green,
+                        R.color.indigo_500,
+                        binding.submit
+                    ).start()
                 }
             } else {
-                Toast.makeText(requireContext(), getString(R.string.wrong), Toast.LENGTH_SHORT).show()
+                // Shaking animation
+                val shake = AnimationUtils.loadAnimation(requireContext(), R.anim.shake)
+                binding.submit.startAnimation(shake)
+
+                // Changing color animation
+                createColorAnimation(
+                    R.color.red_700,
+                    R.color.indigo_500,
+                    binding.submit
+                ).start()
             }
         }
     }
@@ -137,6 +186,12 @@ class GameFragment : Fragment() {
      * Increases the word count.
      */
     private fun onSkipWord() {
+        createColorAnimation(
+            R.color.light_blue_200,
+            R.color.white,
+            binding.skip
+        ).start()
+
         if (!viewModel.nextWord()) {
             showFinalScoreDialog()
         }
@@ -160,7 +215,12 @@ class GameFragment : Fragment() {
     private fun showFinalScoreDialog() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(R.string.congratulations))
-            .setMessage(getString(R.string.you_scored, viewModel.score.value))
+            .setMessage(
+                getString(
+                    R.string.you_scored,
+                    viewModel.score.value
+                )
+            )
             .setCancelable(false)
             .setNegativeButton(getString(R.string.exit)) { _, _ ->
                 exitGame()
@@ -169,5 +229,22 @@ class GameFragment : Fragment() {
                 restartGame()
             }
             .show()
+    }
+
+    private fun createColorAnimation(
+        @ColorRes colorFrom: Int,
+        @ColorRes colorTo: Int,
+        view: View
+    ): ValueAnimator {
+        val colorAnimation = ValueAnimator.ofObject(
+            ArgbEvaluator(),
+            ContextCompat.getColor(requireContext(), colorFrom),
+            ContextCompat.getColor(requireContext(), colorTo)
+        )
+        colorAnimation.duration = 500L
+        colorAnimation.addUpdateListener { animator ->
+            view.setBackgroundColor(animator.animatedValue as Int)
+        }
+        return colorAnimation
     }
 }

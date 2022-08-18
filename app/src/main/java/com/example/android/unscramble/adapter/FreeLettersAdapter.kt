@@ -51,4 +51,10 @@ class FreeLettersAdapter(
         letters = newLetters
         notifyDataSetChanged()
     }
+
+    fun returnFreeLetters(letters: MutableList<Char>) {
+        this.letters = letters
+        viewModel.addAllNewFreeLetters(letters)
+        notifyDataSetChanged()
+    }
 }
