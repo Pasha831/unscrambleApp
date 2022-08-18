@@ -11,6 +11,10 @@ Simple game where user unscrambles words and get points!
 * Добавлена руссфикация! 🇷🇺
 * EditText was deleted, now application uses letter cards inside two Recycleriews
 
+### v1.2.0:
+* Added Refresh button
+* Added simple animations on buttons
+
 ## What i've learned?
 
 * How to use and implement `Fragment`s
@@ -20,6 +24,8 @@ Simple game where user unscrambles words and get points!
 * `DataBinding`: how to bind code to UI and vise versa!
 * `Binding expressions`: how to get rid of `Observer`s in code and update the UI directly in the layout
 * `Talkback`: how to spell the word character by character using `Spannable` class
+* `Animation`s: how to make simple shaking and color changing animations
+* `Translation`: how to translate your app for different locales
 
 ## Noticeable mention
 
@@ -31,4 +37,4 @@ There is some knowledge that wasn't used in this project, but i've also learned 
 
 ## How it looks?
 
-![Screenshot_20220816_112347](https://user-images.githubusercontent.com/46136468/184833729-2b5b613d-b424-4bc4-b92f-7966fbcc7a0e.png)
+![Screenshot_20220818_102458 (2)](https://user-images.githubusercontent.com/46136468/185335450-70b45d45-42c1-4151-adc8-51f9a8cfa4fb.png)
