@@ -50,4 +50,10 @@ class SelectedLettersAdapter(
         letters = newLetters
         notifyDataSetChanged()
     }
+
+    fun clearSelectedLetters() {
+        letters = mutableListOf()
+        viewModel.deleteAllSelectedLetters()
+        notifyDataSetChanged()
+    }
 }

@@ -16,23 +16,31 @@
 
 package com.example.android.unscramble.ui.game
 
+import android.animation.ArgbEvaluator
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
+import android.graphics.Color
+import android.graphics.Color.blue
+import android.graphics.Color.red
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.unscramble.R
 import com.example.android.unscramble.adapter.FreeLettersAdapter
 import com.example.android.unscramble.adapter.SelectedLettersAdapter
 import com.example.android.unscramble.databinding.GameFragmentBinding
+import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+
 
 /**
  * Fragment where the game is played, contains the game logic.
@@ -90,9 +98,14 @@ class GameFragment : Fragment() {
         )
         recyclerView.adapter = selectedLettersAdapter
 
-        // Setup a click listener for the Submit and Skip buttons.
+        // Setup a click listener for the Submit, Skip and Refresh buttons.
         binding.submit.setOnClickListener { onSubmitWord() }
         binding.skip.setOnClickListener { onSkipWord() }
+        binding.refresh.setOnClickListener {
+            selectedLettersAdapter.clearSelectedLetters()
+            freeLettersAdapter.returnFreeLetters(viewModel.currentScrambledWord.value.toString().toCharArray().toMutableList())
+            Log.d("lol", "size of free: ${viewModel.currentFreeLetters.value?.size}, size of current: ${viewModel.currentSelectedLetters.value?.size}")
+        }
 
         viewModel.currentScrambledWord.observe(viewLifecycleOwner) { newWord ->
             freeLettersAdapter.updateScrambledWord(newWord.toString().toMutableList())
@@ -127,6 +140,20 @@ class GameFragment : Fragment() {
                     showFinalScoreDialog()
                 }
             } else {
+                // TODO:
+                //  1) test the animation on my phone
+
+                val colorAnimation = ValueAnimator.ofObject(
+                    ArgbEvaluator(),
+                    ContextCompat.getColor(requireContext(), R.color.red_700),
+                    MaterialColors.getColor(requireContext(), R.attr.colorOnPrimary, Color.BLACK)
+                )
+                colorAnimation.duration = 250L
+                colorAnimation.addUpdateListener { animator ->
+                    binding.submit.setBackgroundColor(animator.animatedValue as Int)
+                }
+                colorAnimation.start()
+
                 Toast.makeText(requireContext(), getString(R.string.wrong), Toast.LENGTH_SHORT).show()
             }
         }
@@ -159,13 +186,13 @@ class GameFragment : Fragment() {
 
     private fun showFinalScoreDialog() {
         MaterialAlertDialogBuilder(requireContext())
-            .setTitle(getString(R.string.congratulations))
-            .setMessage(getString(R.string.you_scored, viewModel.score.value))
+            .setTitle(getString(com.example.android.unscramble.R.string.congratulations))
+            .setMessage(getString(com.example.android.unscramble.R.string.you_scored, viewModel.score.value))
             .setCancelable(false)
-            .setNegativeButton(getString(R.string.exit)) { _, _ ->
+            .setNegativeButton(getString(com.example.android.unscramble.R.string.exit)) { _, _ ->
                 exitGame()
             }
-            .setPositiveButton(getString(R.string.play_again)) { _, _ ->
+            .setPositiveButton(getString(com.example.android.unscramble.R.string.play_again)) { _, _ ->
                 restartGame()
             }
             .show()
