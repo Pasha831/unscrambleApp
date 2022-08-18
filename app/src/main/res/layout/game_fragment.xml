@@ -39,29 +39,40 @@
             android:padding="@dimen/default_padding"
             tools:context=".ui.game.GameFragment">
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/refresh"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:gravity="center_horizontal"
+                app:icon="@drawable/ic_baseline_refresh_24"
+                app:iconGravity="textStart"
+                android:layout_marginEnd="@dimen/default_padding"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/skip"
+                app:layout_constraintTop_toTopOf="@id/skip" />
+
             <Button
                 android:id="@+id/skip"
                 style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/default_padding"
-                android:layout_marginEnd="@dimen/default_padding"
                 android:layout_marginTop="32dp"
                 android:text="@string/skip"
-                app:layout_constraintTop_toBottomOf="@id/rv_selected_letters"
-                app:layout_constraintEnd_toStartOf="@id/submit"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintEnd_toStartOf="@id/refresh"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rv_selected_letters" />
 
             <Button
                 android:id="@+id/submit"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/default_margin"
                 android:text="@string/submit"
-                android:layout_marginEnd="16dp"
-                app:layout_constraintStart_toEndOf="@id/skip"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rv_selected_letters" />
+                app:layout_constraintEnd_toEndOf="@id/refresh"
+                app:layout_constraintStart_toStartOf="@id/skip"
+                app:layout_constraintTop_toBottomOf="@id/skip" />
 
             <TextView
                 android:id="@+id/textView_instructions"
@@ -116,7 +127,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                app:layout_constraintBottom_toTopOf="@+id/submit"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView_instructions" />
@@ -127,9 +137,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="16dp"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/skip" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/submit" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
