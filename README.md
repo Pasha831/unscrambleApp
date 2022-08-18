@@ -11,6 +11,10 @@ Simple game where user unscrambles words and get points!
 * Добавлена руссфикация! 🇷🇺
 * EditText was deleted, now application uses letter cards inside two Recycleriews
 
+### v1.2.0:
+* Added Refresh button
+* Added simple animations on buttons
+
 ## What i've learned?
 
 * How to use and implement `Fragment`s
