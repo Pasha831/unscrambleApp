@@ -48,6 +48,19 @@ jobs:
           path: app/build/outputs/apk/signedRelease/*.apk
           retention-days: 14
           
+  send-apk:
+    needs: build_apk
+    name: Send Telegram notification
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Get APK from artifact
+        uses: actions/download-artifact@master
+        with:
+          name: unscramble-release
+          path: app/build/outputs/apk
+
       - name: Telegram Notify
         if: always()
         run: |
