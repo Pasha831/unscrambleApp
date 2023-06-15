@@ -1,3 +1,15 @@
 <resources>
-    <string name="app_name">UnscrableNew</string>
+    <string name="app_name" translatable="false">UnscrableNew</string>
+    <string name="unscramble">Unscramble</string>
+    <string name="word_counter">%d of %d words</string>
+    <string name="score">Score: %d</string>
+    <string name="description">Unscramble the word using all the letters.</string>
+    <string name="skip">Skip</string>
+    <string name="submit">Submit</string>
+    <string name="no_selected_letters">No selected letters!</string>
+    <string name="wrong">Wrong!</string>
+    <string name="congratulations">Congratulations!</string>
+    <string name="you_scored">You scored: %d</string>
+    <string name="play_again">Play again!</string>
+    <string name="exit">Exit</string>
 </resources>
