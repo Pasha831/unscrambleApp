@@ -1,19 +1,49 @@
 name: Build & deploy APK
 
+# Environmental variables (secrets)
+env:
+  SIGNKEY_ALIAS: ${{ secrets.SIGNKEY_ALIAS }}
+  SIGNKEY_PASSWORD: ${{ secrets.SIGNKEY_PASSWORD }}
+
+# Schedule pipeline on push/PR in master
 on:
   push:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
   
+  # Also add way to start workflow manually
   workflow_dispatch:
   
 jobs:
-  print_hello:
+  build_apk:
     runs-on: ubuntu-latest
-    
     steps:
       - uses: actions/checkout@v3
+      
+      - name: Setup JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'oracle'
 
-      - name: Run a one-line script
-        run: echo Hello, world!
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+        
+      - name: Decode sign key
+        run: |
+          echo "${{ secrets.SIGNKEY_BASE64 }}" | base64 -d > app/key.jks
+          
+      - name: Build APK
+        if: success()
+        run: |
+          chmod +x ./gradlew
+          ./gradlew --no-daemon assembleSignedRelease
+      
+      - name: Upload APK
+        if: success()
+        uses: actions/upload-artifact@v3
+        with:
+          name: unscramble-release
+          path: app/build/outputs/apk/signedRelease/*.apk
+          retention-days: 14
