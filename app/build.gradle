@@ -10,6 +10,14 @@ if (file('secrets.gradle').exists()) {
     project.ext.signKeyAlias = System.getenv("SIGNKEY_ALIAS")
 }
 
+tasks.withType(Test) {
+    testLogging {
+        exceptionFormat "full"
+        events "started", "skipped", "passed", "failed"
+        showStandardStreams true
+    }
+}
+
 android {
     namespace 'com.example.unscrablenew'
     compileSdk 33
