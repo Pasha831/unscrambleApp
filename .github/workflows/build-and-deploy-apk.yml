@@ -7,10 +7,10 @@ env:
 
 # Schedule pipeline on push/PR in master
 on:
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+#   push:
+#     branches: [ "master" ]
+#   pull_request:
+#     branches: [ "master" ]
   
   # Also add way to start workflow manually
   workflow_dispatch:
